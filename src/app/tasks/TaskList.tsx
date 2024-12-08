@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { TaskCard } from "@/app/tasks/TaskCard";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
-// Definição da interface para modelar as tarefas
 interface Task {
   id: string;
   title: string;
@@ -12,11 +12,11 @@ interface Task {
 }
 
 export function TaskList() {
-  const [tasks, setTasks] = useState<Task[]>([]); // Armazena todas as tarefas
-  const [filter, setFilter] = useState<string>("all"); // Estado para o filtro selecionado
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [filter, setFilter] = useState<string>("all");
+  const [searchTerm, setSearchTerm] = useState<string>(""); // Novo estado para o termo de busca
 
   useEffect(() => {
-    // Busca as tarefas da API quando o componente é montado
     async function fetchTasks() {
       const response = await fetch("/api/tasks");
       const data = await response.json();
@@ -25,16 +25,25 @@ export function TaskList() {
     fetchTasks();
   }, []);
 
-  // Filtra as tarefas com base no estado atual do filtro
+  // Filtrar tarefas com base no status e no termo de busca
   const filteredTasks = tasks.filter((task) => {
-    if (filter === "all") return true; // Retorna todas as tarefas
-    if (filter === "active") return !task.completed; // Retorna apenas tarefas ativas
-    if (filter === "completed") return task.completed; // Retorna apenas tarefas concluídas
+    const matchesStatus =
+      filter === "all" || (filter === "active" && !task.completed) || (filter === "completed" && task.completed);
+    const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesStatus && matchesSearch;
   });
 
   return (
     <div>
-      {/* Dropdown para selecionar o filtro de tarefas */}
+      {/* Campo de busca */}
+      <Input
+        placeholder="Buscar tarefas..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="mb-4"
+      />
+
+      {/* Filtro de status */}
       <Select onValueChange={(value) => setFilter(value)}>
         <SelectTrigger className="mb-4">
           <SelectValue placeholder="Filtrar tarefas" />
@@ -45,8 +54,8 @@ export function TaskList() {
           <SelectItem value="completed">Concluídas</SelectItem>
         </SelectContent>
       </Select>
-      
-      {/* Exibe a lista de tarefas filtradas */}
+
+      {/* Lista de tarefas */}
       {filteredTasks.map((task) => (
         <TaskCard key={task.id} task={task} />
       ))}
