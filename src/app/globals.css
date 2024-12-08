@@ -8,10 +8,10 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --background: 0 0% 100%; /* Fundo claro */
+    --foreground: 240 10% 3.9%; /* Texto claro */
+    --card: 0 0% 100%; /* Fundo do cartão */
+    --card-foreground: 240 10% 3.9%; /* Texto do cartão */
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
     --primary: 240 5.9% 10%;
@@ -34,12 +34,13 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
+    --background: 240 10% 10%; /* Fundo escuro ajustado */
+    --foreground: 0 0% 98%; /* Texto claro */
+    --card: 240 10% 15%; /* Fundo do cartão em modo escuro */
+    --card-foreground: 0 0% 98%; /* Texto do cartão em modo escuro */
+    --popover: 240 10% 15%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
     --primary-foreground: 240 5.9% 10%;
@@ -67,6 +68,6 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground; /* Ajusta a cor do fundo e do texto */
   }
 }

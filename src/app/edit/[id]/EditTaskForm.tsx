@@ -62,9 +62,9 @@ export default function EditTaskForm() {
   }
 
   return (
-    <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <div className="bg-card p-8 rounded-lg shadow-lg w-full max-w-md text-foreground">
       <h1 className="text-2xl font-bold mb-2 text-center">Editar Tarefa</h1>
-      <p className="text-gray-500 mb-6 text-center">
+      <p className="text-muted-foreground mb-6 text-center">
         Tarefa atual: <span className="font-semibold">&quot;{currentTitle}&quot;</span>
       </p>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -79,14 +79,14 @@ export default function EditTaskForm() {
           <Button
             type="button"
             onClick={handleBack}
-            className="bg-gray-500 text-white w-full py-2 rounded transition-all hover:bg-gray-600 hover:scale-105"
+            className="bg-secondary text-secondary-foreground w-full py-2 rounded transition-all hover:bg-secondary/80 hover:scale-105"
           >
             Voltar
           </Button>
           {/* Botão de Salvar */}
           <Button
             type="submit"
-            className="bg-black text-white w-full py-2 rounded transition-all hover:bg-gray-800 hover:scale-105"
+            className="bg-primary text-primary-foreground w-full py-2 rounded transition-all hover:bg-primary/80 hover:scale-105"
           >
             Salvar
           </Button>
