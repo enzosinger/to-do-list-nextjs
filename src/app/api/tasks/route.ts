@@ -16,18 +16,24 @@ export async function GET() {
 // Criar uma nova tarefa
 export async function POST(request: Request) {
   try {
-    const { title } = await request.json();
+    const { title, category } = await request.json();
 
     // Verifica se o título foi enviado
     if (!title || title.trim() === "") {
       return NextResponse.json({ error: 'Título é obrigatório' }, { status: 400 });
     }
 
-    // Cria uma nova tarefa com o título e define o status como "não concluída" por padrão
+    // Verifica se a categoria foi enviada
+    if (!category || !['Pessoal', 'Trabalho', 'Outro'].includes(category)) {
+      return NextResponse.json({ error: 'Categoria inválida' }, { status: 400 });
+    }
+
+    // Cria uma nova tarefa com o título, status padrão e categoria
     const task = await prisma.task.create({
       data: {
         title,
         completed: false,
+        category,
       },
     });
 
@@ -41,11 +47,16 @@ export async function POST(request: Request) {
 // Atualizar uma tarefa
 export async function PATCH(request: Request) {
   try {
-    const { id, title, completed } = await request.json();
+    const { id, title, completed, category } = await request.json();
 
     // Verifica se o ID foi enviado
     if (!id) {
       return NextResponse.json({ error: 'ID é obrigatório' }, { status: 400 });
+    }
+
+    // Verifica se a categoria é válida, caso fornecida
+    if (category && !['Pessoal', 'Trabalho', 'Outro'].includes(category)) {
+      return NextResponse.json({ error: 'Categoria inválida' }, { status: 400 });
     }
 
     // Atualiza os dados da tarefa com base nos campos fornecidos
@@ -54,6 +65,7 @@ export async function PATCH(request: Request) {
       data: {
         ...(title !== undefined && { title }), // Atualiza o título se fornecido
         ...(completed !== undefined && { completed }), // Atualiza o status se fornecido
+        ...(category !== undefined && { category }), // Atualiza a categoria se fornecida
       },
     });
 

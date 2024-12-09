@@ -9,6 +9,7 @@ export default function EditTaskForm() {
   const { id } = useParams(); // Captura o ID da tarefa
   const router = useRouter();
   const [title, setTitle] = useState(""); // Estado do input
+  const [category, setCategory] = useState("Pessoal"); // Estado da categoria
   const [currentTitle, setCurrentTitle] = useState(""); // Nome atual da tarefa
 
   // Função para buscar a tarefa
@@ -25,6 +26,7 @@ export default function EditTaskForm() {
 
         const task = await response.json();
         setTitle(task.title); // Define o valor do input
+        setCategory(task.category); // Define a categoria atual
         setCurrentTitle(task.title); // Define o nome atual da tarefa
       } catch (error) {
         console.error("Erro ao buscar a tarefa:", error);
@@ -41,7 +43,7 @@ export default function EditTaskForm() {
       const response = await fetch("/api/tasks", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, title }),
+        body: JSON.stringify({ id, title, category }),
       });
 
       if (!response.ok) {
@@ -71,9 +73,44 @@ export default function EditTaskForm() {
         <Input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Edite a tarefa"
+          placeholder="Edite o título da tarefa"
           className="w-full"
         />
+        <div className="space-y-2">
+          <p className="text-muted-foreground">Categoria:</p>
+          <div className="flex flex-col space-y-2">
+            <label className="flex items-center">
+              <input
+                type="radio"
+                value="Pessoal"
+                checked={category === "Pessoal"}
+                onChange={(e) => setCategory(e.target.value)}
+                className="mr-2"
+              />
+              Pessoal
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                value="Trabalho"
+                checked={category === "Trabalho"}
+                onChange={(e) => setCategory(e.target.value)}
+                className="mr-2"
+              />
+              Trabalho
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                value="Outro"
+                checked={category === "Outro"}
+                onChange={(e) => setCategory(e.target.value)}
+                className="mr-2"
+              />
+              Outro
+            </label>
+          </div>
+        </div>
         <div className="flex justify-between space-x-4">
           {/* Botão de Voltar */}
           <Button

@@ -12,4 +12,5 @@ model Task {
   title     String
   completed Boolean  @default(false)
   createdAt DateTime @default(now())
+  category  String   @default("Outro") // Define "Outro" como padrão
 }
